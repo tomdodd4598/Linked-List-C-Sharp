@@ -6,19 +6,19 @@ namespace LinkedList
 {
 	static class EntryPoint
 	{
-		static readonly Regex ValidRegex = new Regex("^(0|-?[1-9][0-9]*|[A-Za-z][0-9A-Z_a-z]*)$", RegexOptions.Compiled);
+		static readonly Regex ValidRegex = new("^(0|-?[1-9][0-9]*|[A-Za-z][0-9A-Z_a-z]*)$", RegexOptions.Compiled);
 
 		static bool IsValidString(string str) => ValidRegex.IsMatch(str);
 
-		static bool InsertBefore(string val, Item<string> oth)
+		static bool InsertBefore(string val, Item<string> item)
 		{
-			if (BigInteger.TryParse(val, out var x) && BigInteger.TryParse(oth.value, out var y))
+			if (BigInteger.TryParse(val, out var x) && BigInteger.TryParse(item.value, out var y))
 			{
 				return x <= y;
 			}
 			else
 			{
-				return val.CompareTo(oth.value) < 1;
+				return val.CompareTo(item.value) < 1;
 			}
 		}
 
@@ -26,10 +26,9 @@ namespace LinkedList
 
 		static void Main()
 		{
-			Item<string> start = null;
+			Item<string>? start = null;
 
 			var begin = true;
-			string input;
 
 			while (true)
 			{
@@ -43,7 +42,7 @@ namespace LinkedList
 				}
 
 				Console.WriteLine("Awaiting input...");
-				input = Console.ReadLine();
+				string input = Console.ReadLine()!;
 
 				if (input.Length == 0)
 				{
@@ -60,7 +59,7 @@ namespace LinkedList
 					}
 					else
 					{
-						input = input.Substring(1);
+						input = input[1..];
 						if (IsValidString(input))
 						{
 							Console.WriteLine("\nRemoving item...");

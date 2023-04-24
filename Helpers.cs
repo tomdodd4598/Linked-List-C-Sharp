@@ -4,10 +4,9 @@ namespace LinkedList
 {
 	public static class Helpers
 	{
-		public static void InsertItem<T>(ref Item<T> start, T val, Func<T, Item<T>, bool> insertBefore)
+		public static void InsertItem<T>(ref Item<T>? start, T val, Func<T, Item<T>, bool> insertBefore)
 		{
-			Console.WriteLine($"Creating item: {val}");
-			Item<T> current = start, previous = null;
+			Item<T>? current = start, previous = null;
 
 			while (current != null && !insertBefore(val, current))
 			{
@@ -26,9 +25,9 @@ namespace LinkedList
 			}
 		}
 
-		public static void RemoveItem<T>(ref Item<T> start, T val, Func<Item<T>, T, bool> valueEquals)
+		public static void RemoveItem<T>(ref Item<T>? start, T val, Func<Item<T>, T, bool> valueEquals)
 		{
-			Item<T> current = start, previous = null;
+			Item<T>? current = start, previous = null;
 
 			while (current != null && !valueEquals(current, val))
 			{
@@ -54,9 +53,9 @@ namespace LinkedList
 			}
 		}
 
-		public static void RemoveAll<T>(out Item<T> start) => start = null;
+		public static void RemoveAll<T>(out Item<T>? start) => start = null;
 
-		public static void PrintLoop<T>(Item<T> start)
+		public static void PrintLoop<T>(Item<T>? start)
 		{
 			while (start != null)
 			{
@@ -64,7 +63,7 @@ namespace LinkedList
 			}
 		}
 
-		public static void PrintIterator<T>(Item<T> start)
+		public static void PrintIterator<T>(Item<T>? start)
 		{
 			if (start != null)
 			{
@@ -75,16 +74,16 @@ namespace LinkedList
 			}
 		}
 
-		public static void PrintArray<T>(Item<T> start)
+		public static void PrintArray<T>(Item<T>? start)
 		{
 			var item = start;
 			for (int i = 0; item != null; ++i)
 			{
-				item = start[i].PrintGetNext();
+				item = start![i]!.PrintGetNext();
 			}
 		}
 
-		public static void PrintRecursive<T>(Item<T> start)
+		public static void PrintRecursive<T>(Item<T>? start)
 		{
 			if (start != null)
 			{
@@ -92,19 +91,19 @@ namespace LinkedList
 			}
 		}
 
-		public static void PrintFold<T>(Item<T> start)
+		public static void PrintFold<T>(Item<T>? start)
 		{
-			Func<Item<T>, Item<T>, string, string> fSome = (current, next, accumulator) => $"{accumulator}{current.value}, ";
-			Func<Item<T>, string, string> fLast = (current, accumulator) => $"{accumulator}{current.value}\n";
-			Func<string, string> fEmpty = accumulator => accumulator;
+			static string fSome(Item<T> current, Item<T> next, string accumulator) => $"{accumulator}{current.value}, ";
+			static string fLast(Item<T> current, string accumulator) => $"{accumulator}{current.value}\n";
+			static string fEmpty(string accumulator) => accumulator;
 			Console.Write(Item<T>.Fold(fSome, fLast, fEmpty, "", start));
 		}
 
-		public static void PrintFoldback<T>(Item<T> start)
+		public static void PrintFoldback<T>(Item<T>? start)
 		{
-			Func<Item<T>, Item<T>, string, string> fSome = (current, next, innerVal) => $"{current.value}, {innerVal}";
-			Func<Item<T>, string> fLast = current => $"{current.value}\n";
-			Func<string> fEmpty = () => "";
+			static string fSome(Item<T> current, Item<T> next, string innerVal) => $"{current.value}, {innerVal}";
+			static string fLast(Item<T> current) => $"{current.value}\n";
+			static string fEmpty() => "";
 			Console.Write(Item<T>.Foldback(fSome, fLast, fEmpty, x => x, start));
 		}
 	}
